@@ -1,32 +1,28 @@
-from tkinter import * 
-from PIL import ImageTk, Image
-from tkinter import filedialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QFileDialog
 
-root = Tk()
-root.title('Computer Vision')
-root.geometry("1500x1500")
+from PyQt5 import uic
+from PyQt5.QtGui import QPixmap
+import sys
 
-def show():
-    myLabel = Label(root, text=clicked.get()).pack()
+class UI(QMainWindow):
+    def init(self):
+        super(UI, self).init()
 
-clicked = StringVar()
-options = [
-    "Negasi",
-    "Rotate",
-    "Pencerminan"
-]
+        uic.loadUi("tugas1.ui", self)
 
-drop = OptionMenu(root, clicked, *options)
-drop.pack()
-   
-myButton = Button(root, text="Show Selection", command=show).pack()
-# def open():
-    # global my_image
-    # root.filename = filedialog.askopenfilename(initialdir="/media/ikantongkol/575E5BC04E0C3C04/Kuliah/Tugas/Tugas/SEMESTER 7/Visi Komputer/visi-komputer/tugas1/", title="Select A File")
-    # my_label = Label(root, text=root.filename).pack()
-    # my_image = ImageTk.PhotoImage(Image.open(root.filename))
-    # my_image_label = Label(Image=my_image).pack()
-    # 
-# my_btn = Button(root, text="Open File", command=open).pack()
+        #definisi widget
+        self.button = self.findChild(QPushButton, "btnInsert")
+        self.label = self.findChild(QLabel, "img1")
+        self.button.clicked.connect(self.clicker)
+        self.show()
 
-root.mainloop()
+    def clicker(self):
+        fname = QFileDialog.getOpenFileName(self, "Insert Gambar", "/home/ikantongkol/Downloads", "All File (*);; PNG File (*png)", "Jpg File (*jpg)", )
+
+        #Buka Gambar
+        self.pixmap = QPixmap(fname[0])
+        self.label.setPixmap(self.pixmap)
+
+app = QApplication(sys.argv)
+UIWindow = UI()
+app.exec()
